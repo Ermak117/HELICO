@@ -8,7 +8,10 @@ from utils import randcell2  # импортируем функцию randcell2
 # 3 - госпиталь
 # 4 - апгрейдшоп
 # 5 - огонь
-CELL_TYPES = "🟩🌲🌊🏥🏭🔥"  # список иконок для отображения на карте
+CELL_TYPES = "🟩🌲🟦🏥🏨🔥"  # список иконок для отображения на карте
+TREE_BONUS = 100
+#TODO: change to 5000
+UPGRADE_COST = 500
 
 class Map:
     def __init__(self, w, h):
@@ -16,6 +19,10 @@ class Map:
         self.h = h
         # храним клетки как [row=y][col=x]
         self.cells = [[0 for _ in range(w)] for _ in range(h)]
+        self.generate_forest(3, 10)  # генерация леса на карте
+        self.generate_river(10)
+        self.generate_river(10)
+        self.generate_upgrade_shop()
 
     def check_bounds(self, x, y):
         # x — по ширине (столбец), y — по высоте (строка)
@@ -54,14 +61,6 @@ class Map:
                 # можно ничего не делать — шаг не засчитывается
                 pass
 
-        # Альтернатива в стиле вашего кода (когда длина убывает в любом случае):
-        # while length > 0:
-        #     nx, ny = randcell2(x, y)
-        #     if self.check_bounds(nx, ny):
-        #         self.cells[ny][nx] = 2
-        #         x, y = nx, ny
-        #     length -= 1
-
     def generate_forest(self, r, mxr):
         # функция рандомного генерирования деревьев на карте
         for x in range(self.h):
@@ -74,6 +73,11 @@ class Map:
         cx, cy = randcell(self.h, self.w)
         if self.cells[cx][cy] == 0:  # проверяем что есть поле
             self.cells[cx][cy] = 1
+    
+    def generate_upgrade_shop(self): # механика апгрейд шопа
+        c = randcell(self.h, self.w)
+        cx, cy = c[0], c[1]
+        self.cells[cx][cy] = 4
 
     def add_fire(self):
         # механика генерации огня
@@ -88,13 +92,17 @@ class Map:
                 if self.cells[x][y] == 5:
                     self.cells[x][y] = 0
         # затем поджигаем новые
-        for _ in range(10):
+        for _ in range(10): # частота появления огня на карте
             self.add_fire()
 
     def process_helicopter(self, helico):
         c = self.cells[helico.x] [helico.y]
         if (c == 2):
             helico.tank = helico.mxtank
-        elif (c == 5 and helico.tank > 0):
+        if (c == 5 and helico.tank > 0):
             helico.tank -= 1
+            helico.score += TREE_BONUS
             self.cells[helico.x][helico.y] = 1
+        if (c == 4 and helico.score >= UPGRADE_COST):
+            helico.mxtank += 1
+            helico.score -= UPGRADE_COST

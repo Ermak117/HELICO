@@ -1,4 +1,5 @@
 # ВЕРТОЛЁТ
+# 🟩 🌲 🌊 🏥 🏭 🔥 🪣 🏆 ☁️ ⚡
 from utils import randcell# добавляем метод randcell для генерации начального положения вертолета 
 
 class Helicopter: # назначаем класс 
@@ -12,6 +13,7 @@ class Helicopter: # назначаем класс
         self.y = ry
         self.mxtank = 1
         self.tank = 0
+        self.score = 0
         
         
 
@@ -21,4 +23,5 @@ class Helicopter: # назначаем класс
             self.x, self.y = nx, ny
 
     def print_stats(self):
-        print('🪣  ', self.tank, '/', self.mxtank, sep="")
+        print('🪣  ', self.tank, '/', self.mxtank, sep="",end=" | ")
+        print ('🏆', self.score)

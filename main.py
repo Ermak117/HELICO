@@ -12,9 +12,7 @@ FIRE_UPDATE = 100
 MAP_W, MAP_H = 20,10
 
 field = Map(MAP_W, MAP_H)
-field.generate_forest(3, 10)  # генерация леса на карте
-field.generate_river(10)
-field.generate_river(10)
+
 
 helico = Helico (MAP_W, MAP_H)
 
