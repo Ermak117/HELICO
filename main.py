@@ -43,6 +43,8 @@ tick = 1
 while True:
     os.system("clear") # cls для Windows
     print("TICK", tick)
+    field.process_helicopter(helico)
+    helico.print_stats()
     field.print_map(helico)
     tick += 1
     time.sleep(TICK_SLEEP)

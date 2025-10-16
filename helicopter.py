@@ -10,6 +10,8 @@ class Helicopter: # назначаем класс
         self.w = w
         self.x = rx
         self.y = ry
+        self.mxtank = 1
+        self.tank = 0
         
         
 
@@ -17,3 +19,6 @@ class Helicopter: # назначаем класс
         nx, ny = dx + self.x, dy + self.y      
         if (nx >= 0 and ny >= 0 and nx < self.h and ny < self.w):
             self.x, self.y = nx, ny
+
+    def print_stats(self):
+        print('🪣  ', self.tank, '/', self.mxtank, sep="")
